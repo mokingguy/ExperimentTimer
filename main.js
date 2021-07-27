@@ -34,6 +34,7 @@ function updateTable() {
 
 let buttonNado = document.getElementById("timer-nado-button");
 buttonNado.addEventListener('click', function () {
+    clearTimers('nado');
     if(!toggleNado) {
         intervalNado = setInterval(function () {
             timerNado += 10;
@@ -55,6 +56,7 @@ resetNado.addEventListener('click', function () {
 
 let buttonEscala = document.getElementById("timer-escala-button");
 buttonEscala.addEventListener('click', function () {
+    clearTimers('escala');
     if(!toggleEscala) {
         intervalEscala = setInterval(function () {
             timerEscala += 10;
@@ -76,6 +78,7 @@ resetEscala.addEventListener('click', function () {
 
 let buttonFlotacion = document.getElementById("timer-flotacion-button");
 buttonFlotacion.addEventListener('click', function () {
+    clearTimers('flotación');
     if(!toggleFlotacion) {
         intervalFlotacion = setInterval(function () {
             timerFlotacion += 10;
@@ -135,3 +138,27 @@ clearTableElement.addEventListener('click', function () {
     results = [];
     document.getElementById('tableBody').innerHTML = "";
 })
+
+function clearTimers(type) {
+    buttonNado.innerHTML = "Inicia temporizador de nado";
+    buttonEscala.innerHTML = "Inicia temporizador de escala";
+    buttonFlotacion.innerHTML = "Inicia temporizador de flotación";
+    switch(type) {
+        case 'nado':
+            toggleEscala = false;
+            toggleFlotacion = false;
+            break;
+        case 'escala':
+            toggleNado = false;
+            toggleFlotacion = false;
+            break;
+        case 'flotación':
+            toggleEscala = false;
+            toggleNado = false;
+            break;
+    }
+    
+    clearInterval(intervalEscala);
+    clearInterval(intervalFlotacion);
+    clearInterval(intervalNado);
+}

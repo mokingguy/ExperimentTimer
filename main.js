@@ -64,12 +64,12 @@
         toggleFlotacion = !toggleFlotacion;
     }
 
-    function updateTimerLabel(id, time) {
+    let updateTimerLabel = (id, time) => {
         let seconds = time / 1000;
         document.getElementById(id).innerHTML = `${seconds}s`;
     }
 
-    function updateTable() {
+    let updateTable = () => {
         let tableContent = "";
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
@@ -84,66 +84,7 @@
         document.getElementById('tableBody').innerHTML = tableContent;
     }
 
-    buttonNado.addEventListener('click', callbackNado)
-
-    resetNado.addEventListener('click', function () {
-        timerNado = 0;
-        updateTimerLabel('timer-nado', 0);
-    })
-
-    buttonEscala.addEventListener('click', callbackEscala)
-
-    resetEscala.addEventListener('click', function () {
-        timerEscala = 0;
-        updateTimerLabel('timer-escala', 0);
-    })
-
-    buttonFlotacion.addEventListener('click', callbackFlotacion)
-
-    resetFlotacion.addEventListener('click', function () {
-        timerFlotacion = 0;
-        updateTimerLabel('timer-flotacion', 0);
-    })
-
-    agregarElement.addEventListener('click', function () {
-        const result = [
-            document.getElementById('input').value,
-            `${timerNado/1000}`,
-            `${timerEscala/1000}`,
-            `${timerFlotacion/1000}`,
-        ];
-        document.getElementById('input').value = "";
-        results.push(result);
-        timerNado = 0;
-        updateTimerLabel('timer-nado', 0);
-        timerEscala = 0;
-        updateTimerLabel('timer-escala', 0);
-        timerFlotacion = 0;
-        updateTimerLabel('timer-flotacion', 0);
-        updateTable();
-    })
-
-    exportElement.addEventListener('click', function () {
-        const rows = [
-            ["Nombre", "Tiempo de nado", "Tiempo de escala", "Tiempo de flotación"],
-            ...results
-        ];
-        
-        let csvContent = "data:text/csv;charset=utf-8,";
-        rows.forEach(function(rowArray) {
-            let row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
-        var encodedUri = encodeURI(csvContent);
-        window.open(encodedUri);
-    })
-
-    clearTableElement.addEventListener('click', function () {
-        results = [];
-        document.getElementById('tableBody').innerHTML = "";
-    })
-
-    function clearTimers(type) {
+    let clearTimers = (type) => {
         buttonNado.innerHTML = "Inicia temporizador de nado";
         buttonEscala.innerHTML = "Inicia temporizador de escala";
         buttonFlotacion.innerHTML = "Inicia temporizador de flotación";
@@ -166,4 +107,64 @@
         clearInterval(intervalFlotacion);
         clearInterval(intervalNado);
     }
-})()
+
+    buttonNado.addEventListener('click', callbackNado)
+
+    resetNado.addEventListener('click', () => {
+        timerNado = 0;
+        updateTimerLabel('timer-nado', 0);
+    })
+
+    buttonEscala.addEventListener('click', callbackEscala)
+
+    resetEscala.addEventListener('click', () => {
+        timerEscala = 0;
+        updateTimerLabel('timer-escala', 0);
+    })
+
+    buttonFlotacion.addEventListener('click', callbackFlotacion)
+
+    resetFlotacion.addEventListener('click', () => {
+        timerFlotacion = 0;
+        updateTimerLabel('timer-flotacion', 0);
+    })
+
+    agregarElement.addEventListener('click', () => {
+        const result = [
+            document.getElementById('input').value,
+            `${timerNado/1000}`,
+            `${timerEscala/1000}`,
+            `${timerFlotacion/1000}`,
+        ];
+        document.getElementById('input').value = "";
+        results.push(result);
+        timerNado = 0;
+        updateTimerLabel('timer-nado', 0);
+        timerEscala = 0;
+        updateTimerLabel('timer-escala', 0);
+        timerFlotacion = 0;
+        updateTimerLabel('timer-flotacion', 0);
+        updateTable();
+    })
+
+    exportElement.addEventListener('click', () => {
+        const rows = [
+            ["Nombre", "Tiempo de nado", "Tiempo de escala", "Tiempo de flotación"],
+            ...results
+        ];
+        
+        let csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function(rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+        var encodedUri = encodeURI(csvContent);
+        window.open(encodedUri);
+    })
+
+    clearTableElement.addEventListener('click', () => {
+        results = [];
+        document.getElementById('tableBody').innerHTML = "";
+    })
+
+})();

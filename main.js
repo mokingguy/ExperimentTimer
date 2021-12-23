@@ -26,12 +26,17 @@
                 timerNado += 10;
                 updateTimerLabel('timer-nado', timerNado);
             }, 10);
-            buttonNado.innerHTML = "Termina temporizador de nado";
+            buttonNado.innerHTML = "Termina temporizador de nado (1)";
         } else {
-            buttonNado.innerHTML = "Inicia temporizador de nado";
+            buttonNado.innerHTML = "Inicia temporizador de nado (1)";
             clearInterval(intervalNado)
         }
         toggleNado = !toggleNado;
+    }
+
+    let callbackResetNado = () => {
+        timerNado = 0;
+        updateTimerLabel('timer-nado', 0);
     }
 
     let callbackEscala = () => {
@@ -41,27 +46,58 @@
                 timerEscala += 10;
                 updateTimerLabel('timer-escala', timerEscala);
             }, 10);
-            buttonEscala.innerHTML = "Termina temporizador de escala";
+            buttonEscala.innerHTML = "Termina temporizador de escala (2)";
         } else {
-            buttonEscala.innerHTML = "Inicia temporizador de escala";
+            buttonEscala.innerHTML = "Inicia temporizador de escala (2)";
             clearInterval(intervalEscala)
         }
         toggleEscala = !toggleEscala;
     }
 
-    let callbackFlotacion = () =>  {
+    let callbackResetEscala = () => {
+        timerEscala = 0;
+        updateTimerLabel('timer-escala', 0);
+    }
+
+    let callbackFlotacion = () => {
         clearTimers('flotación');
         if(!toggleFlotacion) {
             intervalFlotacion = setInterval(function () {
                 timerFlotacion += 10;
                 updateTimerLabel('timer-flotacion', timerFlotacion);
             }, 10);
-            buttonFlotacion.innerHTML = "Termina temporizador de flotación";
+            buttonFlotacion.innerHTML = "Termina temporizador de flotación (3)";
         } else {
-            buttonFlotacion.innerHTML = "Inicia temporizador de flotación";
+            buttonFlotacion.innerHTML = "Inicia temporizador de flotación (3)";
             clearInterval(intervalFlotacion)
         }
         toggleFlotacion = !toggleFlotacion;
+    }
+
+    let callbackResetFlotacion = () => {
+        timerFlotacion = 0;
+        updateTimerLabel('timer-flotacion', 0);
+    }
+
+    let callbackAgregar = () => {
+        clearTimers('nado');
+        clearTimers('escala');
+        clearTimers('flotación');
+        const result = [
+            document.getElementById('input').value,
+            `${timerNado/1000}`,
+            `${timerEscala/1000}`,
+            `${timerFlotacion/1000}`,
+        ];
+        document.getElementById('input').value = "";
+        results.push(result);
+        timerNado = 0;
+        updateTimerLabel('timer-nado', 0);
+        timerEscala = 0;
+        updateTimerLabel('timer-escala', 0);
+        timerFlotacion = 0;
+        updateTimerLabel('timer-flotacion', 0);
+        updateTable();
     }
 
     let updateTimerLabel = (id, time) => {
@@ -85,9 +121,9 @@
     }
 
     let clearTimers = (type) => {
-        buttonNado.innerHTML = "Inicia temporizador de nado";
-        buttonEscala.innerHTML = "Inicia temporizador de escala";
-        buttonFlotacion.innerHTML = "Inicia temporizador de flotación";
+        buttonNado.innerHTML = "Inicia temporizador de nado (1)";
+        buttonEscala.innerHTML = "Inicia temporizador de escala (2)";
+        buttonFlotacion.innerHTML = "Inicia temporizador de flotación (3)";
         switch(type) {
             case 'nado':
                 toggleEscala = false;
@@ -110,42 +146,17 @@
 
     buttonNado.addEventListener('click', callbackNado)
 
-    resetNado.addEventListener('click', () => {
-        timerNado = 0;
-        updateTimerLabel('timer-nado', 0);
-    })
+    resetNado.addEventListener('click', callbackResetNado)
 
     buttonEscala.addEventListener('click', callbackEscala)
 
-    resetEscala.addEventListener('click', () => {
-        timerEscala = 0;
-        updateTimerLabel('timer-escala', 0);
-    })
+    resetEscala.addEventListener('click', callbackResetEscala)
 
     buttonFlotacion.addEventListener('click', callbackFlotacion)
 
-    resetFlotacion.addEventListener('click', () => {
-        timerFlotacion = 0;
-        updateTimerLabel('timer-flotacion', 0);
-    })
+    resetFlotacion.addEventListener('click', callbackResetFlotacion)
 
-    agregarElement.addEventListener('click', () => {
-        const result = [
-            document.getElementById('input').value,
-            `${timerNado/1000}`,
-            `${timerEscala/1000}`,
-            `${timerFlotacion/1000}`,
-        ];
-        document.getElementById('input').value = "";
-        results.push(result);
-        timerNado = 0;
-        updateTimerLabel('timer-nado', 0);
-        timerEscala = 0;
-        updateTimerLabel('timer-escala', 0);
-        timerFlotacion = 0;
-        updateTimerLabel('timer-flotacion', 0);
-        updateTable();
-    })
+    agregarElement.addEventListener('click', callbackAgregar)
 
     exportElement.addEventListener('click', () => {
         const rows = [
@@ -166,5 +177,35 @@
         results = [];
         document.getElementById('tableBody').innerHTML = "";
     })
+
+    document.addEventListener('keydown', (e) => {
+        if (e.target === document.body) {
+            console.log(e);
+            if (e.code === "Digit1") {
+                if (e.shiftKey) {
+                    callbackResetNado();
+                } else {
+                    callbackNado();
+                }
+            }
+            if (e.code === "Digit2") {
+                if (e.shiftKey) {
+                    callbackResetEscala();
+                } else {
+                    callbackEscala();
+                }
+            }
+            if (e.code === "Digit3") {
+                if (e.shiftKey) {
+                    callbackResetFlotacion();
+                } else {
+                    callbackFlotacion();
+                }
+            }
+            if (e.code === "Enter") {
+                callbackAgregar();
+            }
+        }
+    }, false);
 
 })();

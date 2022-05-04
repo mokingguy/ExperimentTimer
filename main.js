@@ -105,10 +105,10 @@
         const result = [
             name,
             `${timerNado/1000}`,
-            `${timerEscala/1000}`,
-            `${timerFlotacion/1000}`,
             counterNado,
+            `${timerEscala/1000}`,
             counterEscala,
+            `${timerFlotacion/1000}`,
             counterFlotacion
         ];
         document.getElementById('input').value = "";
@@ -141,10 +141,10 @@
                 <tr>
                     <td>${result[0]}</td>
                     <td>${result[1]}s</td>
-                    <td>${result[4]}</td>
-                    <td>${result[2]}s</td>
-                    <td>${result[5]}</td>
+                    <td>${result[2]}</td>
                     <td>${result[3]}s</td>
+                    <td>${result[4]}</td>
+                    <td>${result[5]}s</td>
                     <td>${result[6]}</td>
                 </tr>`;
         }

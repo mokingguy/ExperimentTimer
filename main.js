@@ -1,11 +1,14 @@
 (function() {
     let timerNado = 0;
+    let counterNado = 0;
     let toggleNado = false;
     let intervalNado;
     let timerEscala = 0;
+    let counterEscala = 0;
     let toggleEscala = false;
     let intervalEscala;
     let timerFlotacion = 0;
+    let counterFlotacion = 0;
     let toggleFlotacion = false;
     let intervalFlotacion;
     let results = [];
@@ -18,6 +21,9 @@
     let clearTableElement = document.getElementById("clearTable");
     let buttonNado = document.getElementById("timer-nado-button");
     let resetNado = document.getElementById("timer-nado-reset");
+    let counterNadoElement = document.getElementById("counter-nado");
+    let counterEscalaElement = document.getElementById("counter-escala");
+    let counterFlotacionElement = document.getElementById("counter-flotacion");
 
     let callbackNado = () => {
         clearTimers('nado');
@@ -26,6 +32,8 @@
                 timerNado += 10;
                 updateTimerLabel('timer-nado', timerNado);
             }, 10);
+            counterNado++;
+            counterNadoElement.innerHTML = `${counterNado}`;
             buttonNado.innerHTML = "Termina temporizador de nado (1)";
         } else {
             buttonNado.innerHTML = "Inicia temporizador de nado (1)";
@@ -36,6 +44,8 @@
 
     let callbackResetNado = () => {
         timerNado = 0;
+        counterNado = 0;
+        counterNadoElement.innerHTML = `${counterNado}`;
         updateTimerLabel('timer-nado', 0);
     }
 
@@ -46,6 +56,8 @@
                 timerEscala += 10;
                 updateTimerLabel('timer-escala', timerEscala);
             }, 10);
+            counterEscala++;
+            counterEscalaElement.innerHTML = `${counterEscala}`;
             buttonEscala.innerHTML = "Termina temporizador de escala (2)";
         } else {
             buttonEscala.innerHTML = "Inicia temporizador de escala (2)";
@@ -56,6 +68,8 @@
 
     let callbackResetEscala = () => {
         timerEscala = 0;
+        counterEscala = 0;
+        counterEscalaElement.innerHTML = `${counterEscala}`;
         updateTimerLabel('timer-escala', 0);
     }
 
@@ -66,6 +80,8 @@
                 timerFlotacion += 10;
                 updateTimerLabel('timer-flotacion', timerFlotacion);
             }, 10);
+            counterFlotacion++;
+            counterFlotacionElement.innerHTML = `${counterFlotacion}`;
             buttonFlotacion.innerHTML = "Termina temporizador de flotación (3)";
         } else {
             buttonFlotacion.innerHTML = "Inicia temporizador de flotación (3)";
@@ -76,6 +92,8 @@
 
     let callbackResetFlotacion = () => {
         timerFlotacion = 0;
+        countereTimerLabel = 0;
+        counterFlotacionElement.innerHTML = `${counterFlotacion}`;
         updateTimerLabel('timer-flotacion', 0);
     }
 
@@ -83,20 +101,30 @@
         clearTimers('nado');
         clearTimers('escala');
         clearTimers('flotación');
+        const name = document.getElementById('input').value ? document.getElementById('input').value : `Sujeto ${results.length + 1}`
         const result = [
-            document.getElementById('input').value,
+            name,
             `${timerNado/1000}`,
             `${timerEscala/1000}`,
             `${timerFlotacion/1000}`,
+            counterNado,
+            counterEscala,
+            counterFlotacion
         ];
         document.getElementById('input').value = "";
         results.push(result);
+        counterNado = 0;
         timerNado = 0;
         updateTimerLabel('timer-nado', 0);
+        counterNadoElement.innerHTML = `${counterNado}`;
+        counterEscala = 0;
         timerEscala = 0;
         updateTimerLabel('timer-escala', 0);
+        counterEscalaElement.innerHTML = `${counterEscala}`;
+        counterFlotacion = 0;
         timerFlotacion = 0;
         updateTimerLabel('timer-flotacion', 0);
+        counterFlotacionElement.innerHTML = `${counterFlotacion}`;
         updateTable();
     }
 
@@ -113,8 +141,11 @@
                 <tr>
                     <td>${result[0]}</td>
                     <td>${result[1]}s</td>
+                    <td>${result[4]}</td>
                     <td>${result[2]}s</td>
+                    <td>${result[5]}</td>
                     <td>${result[3]}s</td>
+                    <td>${result[6]}</td>
                 </tr>`;
         }
         document.getElementById('tableBody').innerHTML = tableContent;
@@ -160,7 +191,7 @@
 
     exportElement.addEventListener('click', () => {
         const rows = [
-            ["Nombre", "Tiempo de nado", "Tiempo de escala", "Tiempo de flotación"],
+            ["Nombre", "Tiempo de nado", "Instancia de nado", "Tiempo de escala", "Instancia de escala", "Tiempo de flotación", "Instancia de flotación"],
             ...results
         ];
         
